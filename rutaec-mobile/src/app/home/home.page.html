@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>RutaEC - Rutas Populares</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let ruta of rutas">
+      <ion-label>
+        <h2>{{ ruta.nombre }}</h2>
+        <p><strong>Origen:</strong> {{ ruta.origen }} — <strong>Destino:</strong> {{ ruta.destino }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
