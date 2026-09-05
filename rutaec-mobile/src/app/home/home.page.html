@@ -1,16 +1,36 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title>RutaEC - Rutas Populares</ion-title>
+    <ion-title>RutaEC - Inicio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let ruta of rutas">
-      <ion-label>
-        <h2>{{ ruta.nombre }}</h2>
-        <p><strong>Origen:</strong> {{ ruta.origen }} — <strong>Destino:</strong> {{ ruta.destino }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <!-- Tarjeta de Perfil del Usuario usando la sintaxis @if -->
+  @if (user) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person-circle-outline"></ion-icon> ¡Bienvenido, {{ user.nombre }}!
+        </ion-card-title>
+        <ion-card-subtitle>Rol: {{ user.rol }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <!-- Sección de Estado de Sesión -->
+  <ion-item lines="none">
+    <ion-icon name="bus-outline" slot="start" color="primary"></ion-icon>
+    <ion-label>
+      <h2>Sesión Activa</h2>
+      <p>Conectado a PostgreSQL mediante Express API.</p>
+    </ion-label>
+  </ion-item>
 </ion-content>

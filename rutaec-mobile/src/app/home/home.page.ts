@@ -1,34 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-  IonHeader, IonToolbar, IonTitle, IonContent, 
-  IonList, IonItem, IonLabel 
-} from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { logOutOutline, personCircleOutline, busOutline } from 'ionicons/icons';
+// Importación corregida a auth en lugar de auth.service
+import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, 
-    IonList, IonItem, IonLabel
-  ],
+  imports: [CommonModule, IonicModule]
 })
 export class HomePage implements OnInit {
-  rutas: any[] = [];
+  private authService = inject(AuthService);
+  user: any = null;
 
-  constructor(private http: HttpClient) {}
+  constructor() {
+    addIcons({ logOutOutline, personCircleOutline, busOutline });
+  }
 
   ngOnInit() {
-this.http.get<any[]>('http://localhost:3000/api/v1/routes/popular')
-      .subscribe({
-        next: (data) => {
-          this.rutas = data;
-        },
-        error: (err) => console.error('Error al conectar con la API:', err)
-      });
+    this.user = this.authService.getUserData();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
