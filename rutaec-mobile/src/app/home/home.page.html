@@ -1,36 +1,81 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title>RutaEC - Inicio</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      <ion-button (click)="cerrarSesion()" color="light">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Tarjeta de Perfil del Usuario usando la sintaxis @if -->
-  @if (user) {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="person-circle-outline"></ion-icon> ¡Bienvenido, {{ user.nombre }}!
-        </ion-card-title>
-        <ion-card-subtitle>Rol: {{ user.rol }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
-      </ion-card-content>
-    </ion-card>
-  }
+  <!-- Saludo de bienvenida -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>¡Hola, {{ usuario?.nombre || 'Administrador RutaEC' }}!</ion-card-title>
+      <ion-card-subtitle>Rol: {{ usuario?.rol || 'admin' }}</ion-card-subtitle>
+      <ion-card-subtitle *ngIf="usuario?.email">Correo: {{ usuario?.email }}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
 
-  <!-- Sección de Estado de Sesión -->
-  <ion-item lines="none">
-    <ion-icon name="bus-outline" slot="start" color="primary"></ion-icon>
-    <ion-label>
-      <h2>Sesión Activa</h2>
-      <p>Conectado a PostgreSQL mediante Express API.</p>
-    </ion-label>
-  </ion-item>
+  <!-- Servicios de Movilidad -->
+  <h3>Servicios de Movilidad</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-text-center ion-padding">
+          <ion-icon name="bus-outline" size="large" color="primary"></ion-icon>
+          <ion-card-subtitle>Bus Urbano</ion-card-subtitle>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-text-center ion-padding">
+          <ion-icon name="map-outline" size="large" color="primary"></ion-icon>
+          <ion-card-subtitle>Interprovincial</ion-card-subtitle>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-text-center ion-padding">
+          <ion-icon name="cube-outline" size="large" color="primary"></ion-icon>
+          <ion-card-subtitle>Encomiendas</ion-card-subtitle>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-text-center ion-padding">
+          <ion-icon name="location-outline" size="large" color="success"></ion-icon>
+          <ion-card-subtitle>Paradas Cercanas</ion-card-subtitle>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Acciones Rápidas (Ubicación y Cámara) -->
+  <h3>Acciones Rápidas</h3>
+  <div style="display: flex; gap: 10px;">
+    <ion-button expand="block" (click)="obtenerUbicacionWeb()" color="warning" style="flex: 1;">
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      MI UBICACIÓN
+    </ion-button>
+
+    <ion-button expand="block" (click)="abrirCamaraWeb()" color="light" style="flex: 1;">
+      <ion-icon name="camera-outline" slot="start"></ion-icon>
+      REPORTAR FOTO
+    </ion-button>
+  </div>
+
+  <!-- Input oculto para la cámara nativa de Android -->
+  <input 
+    type="file" 
+    accept="image/*" 
+    capture="environment" 
+    #fileInput 
+    (change)="onFotoCapturada($event)" 
+    style="display: none;" 
+  />
+
+  <!-- Previsualización de foto tomada -->
+  <ion-card *ngIf="fotoUrl" class="ion-margin-top">
+    <img [src]="fotoUrl" alt="Foto capturada" />
+  </ion-card>
 </ion-content>

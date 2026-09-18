@@ -5,27 +5,50 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
+  <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+    
+    <ion-item class="ion-margin-bottom">
+      <ion-input 
+        label="Correo Electrónico" 
+        labelPlacement="floating" 
+        type="email" 
+        name="email" 
+        [(ngModel)]="email" 
+        required
+        email>
+      </ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
+    <ion-item class="ion-margin-bottom">
+      <ion-input 
+        label="Contraseña" 
+        labelPlacement="floating" 
+        type="password" 
+        name="password" 
+        [(ngModel)]="password" 
+        required>
+      </ion-input>
     </ion-item>
 
-    <div *ngIf="errorMessage" style="color: red; margin-top: 10px;">
-      {{ errorMessage }}
-    </div>
+    <!-- Banner para mensajes de error de validación o servidor -->
+    <ion-card color="danger" *ngIf="errorMessage" class="ion-no-margin ion-margin-bottom">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="alert-circle-outline" style="font-size: 1.2rem; vertical-align: middle;"></ion-icon>
+        <span style="margin-left: 8px;">{{ errorMessage }}</span>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-button expand="block" type="submit" [disabled]="loginForm.invalid" class="ion-margin-top">
+    <ion-button 
+      expand="block" 
+      type="submit" 
+      [disabled]="loginForm.invalid" 
+      class="ion-margin-top">
       Ingresar
     </ion-button>
+
   </form>
 
-  <ion-button expand="block" fill="clear" routerLink="/register">
+  <ion-button expand="block" fill="clear" routerLink="/register" class="ion-margin-top">
     ¿No tienes cuenta? Regístrate aquí
   </ion-button>
 </ion-content>
